@@ -87,4 +87,18 @@ var twoSum2 = function (nums, target) {
     }
 };
 
-console.log(twoSum2([2, 1, 9, 4, 4, 56, 90, 3], 8));
+//方法三，使用map, 以下代码还有点问题
+var twoSum3 = function (nums, target) {
+    var length = nums.length;
+    var map = new Map();
+    for (var i = 0; i < length; i++) {
+        map.set([nums[i]], i);
+    }
+
+    for (var i = 0; i < length; i++) {
+        var complement = target - nums[i];
+        if (map.has([complement]) && map.get([complement]) !== i) {
+            console.log([i, map.get([complement])])
+        }
+    }
+}
