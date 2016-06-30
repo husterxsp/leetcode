@@ -84,4 +84,5 @@ var lengthOfLongestSubstring4 = function (s) {
     }
     return length;
 }
+
 console.log(lengthOfLongestSubstring4('abcdefc'));

@@ -102,3 +102,4 @@ var twoSum3 = function (nums, target) {
         }
     }
 }
+console.log(twoSum2([2, 1, 9, 4, 4, 56, 90, 3], 8));
