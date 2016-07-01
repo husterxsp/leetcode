@@ -47,37 +47,36 @@ var findMedianSortedArrays2 = function (nums1, nums2) {
 
 };
 
-//递归, 二分
-// var findMedianSortedArrays3 = function (nums1, nums2) {
-//     var length1 = nums1.length,
-//         length2 = nums2.length,
-//         half = Math.floor((length1 + length2) / 2);
-//     if ((length1 + length2) % 2 === 0) {
-//         return (findKth(nums1, nums2, half) + findKth(nums1, nums2, half - 1)) / 2;
-//     } else {
-//         return findKth(nums1, nums2, half);
-//     }
-//     function findKth(arr1, arr2, k) {
-//         if (arr1.length > arr2.length) {
-//             return findKth(arr2, arr1, k);
-//         }
-//         if (arr1.length === 0) {
-//             return arr2[k];
-//         }
-//         if (k === 0) {
-//             return Math.min(arr1[0], arr2[0]);
-//         }
-//         var pointerA = Math.min(k / 2, arr1.length),
-//             pointerB = k - pointerA;
-//         if (arr1[pointerA - 1] < arr2[pointerB - 1]) {
-//             arr1 = arr1.splice(0, pointerA);
-//             return findKth(arr1, arr2, k - pointerA);
-//         } else if (arr1[pointerA - 1] > arr2[pointerB - 1]) {
-//             arr2 = arr2.splice(0, pointerB);
-//             return findKth(arr1, arr2, k - pointerB);
-//         } else {
-//             return arr1[pointerA - 1];
-//         }
-//     }
-// };
-console.log(findMedianSortedArrays2([1, 2, 3, 4, 5], [6, 7, 8, 9, 10]));
+//递归
+var findMedianSortedArrays3 = function (nums1, nums2) {
+    var length1 = nums1.length,
+        length2 = nums2.length,
+        half = Math.floor((length1 + length2) / 2);
+    if ((length1 + length2) % 2 === 0) {
+        return (findKth(nums1, nums2, half) + findKth(nums1, nums2, half + 1)) / 2;
+    } else {
+        return findKth(nums1, nums2, half + 1);
+    }
+
+    function findKth(arr1, arr2, k) {
+        if (arr1.length > arr2.length) {
+            return findKth(arr2, arr1, k);
+        }
+        if (arr1.length === 0) {
+            return arr2[k - 1];
+        }
+        if (k === 1) {
+            return Math.min(arr1[0], arr2[0]);
+        }
+        var pointerA = Math.min(Math.floor(k / 2), arr1.length),
+            pointerB = k - pointerA;
+        if (arr1[pointerA - 1] < arr2[pointerB - 1]) {
+            return findKth(arr1.slice(pointerA), arr2, k - pointerA);
+        } else if (arr1[pointerA - 1] > arr2[pointerB - 1]) {
+            return findKth(arr1, arr2.slice(pointerB), k - pointerB);
+        } else {
+            return arr1[pointerA - 1];
+        }
+    }
+};
+console.log(findMedianSortedArrays3([1], [1]));
