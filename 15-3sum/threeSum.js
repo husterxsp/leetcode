@@ -6,7 +6,7 @@ var threeSum1 = function (nums) {
     var result = [];
     var sign = 0;
     nums.sort((value1, value2) => value1 - value2);
-    for (var i = 0; i < nums.length; i++) {
+    for (var i = 0; i < nums.length - 2; i++) {
         if (nums[i] == nums[i - 1]) {
             continue;
         }
@@ -53,7 +53,36 @@ var threeSum1 = function (nums) {
         return;
     }
 };
-var threeSum2 = function (nums) {
 
+var threeSum2 = function (nums) {
+    var result = [];
+    nums.sort((value1, value2) => value1 - value2);
+    for (var i = 0; i < nums.length - 2; i++) {
+        var start = i + 1,
+            end = nums.length - 1;
+        if (nums[i] === nums[i - 1]) {
+            continue;
+        }
+        while (start < end) {
+            var sum = nums[i] + nums[start] + nums[end];
+            if (sum === 0) {
+                result.push([nums[i], nums[start], nums[end]]);
+                start++;
+                end--;
+                while (nums[start] === nums[start - 1]) {
+                    start++;
+                }
+                while (nums[end] === nums[end + 1]) {
+                    end--;
+                }
+            } else if (sum > 0) {
+                end--;
+            } else if (sum < 0) {
+                start++;
+            }
+        }
+    }
+    return result;
 };
-console.log(threeSum([0, 0, 0, 0]));
+
+console.log(threeSum2([0, 0, 0, 0]));
