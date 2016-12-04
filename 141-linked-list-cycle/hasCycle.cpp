@@ -14,7 +14,7 @@ struct ListNode {
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
-
+// 思路：判断是否链表有环，双指针，不同移动速度，如果能追上则有环。
 bool hasCycle(ListNode *head) {
     ListNode *p1 = head;
     ListNode *p2 = head;

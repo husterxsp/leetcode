@@ -27,6 +27,8 @@ vector<int> postorderTraversal(TreeNode* root) {
             p = p->left;
         }
         p = myStack.top();
+        // p->right == lastNode 有一个从右子树回溯到根节点的过程，
+        // 所以lastNode是记录右节点，再次回溯到根节点时如果右子树已经访问就不访问了。
         if(!p->right || p->right == lastNode){
             ret.push_back(p->val);
             lastNode = p;

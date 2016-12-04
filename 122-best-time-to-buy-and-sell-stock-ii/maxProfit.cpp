@@ -7,11 +7,12 @@
 using namespace std;
 
 // 贪婪
+// 思路：每天都会买进卖出
 int maxProfit(vector<int>& prices) {
     if(!prices.size()) return 0;
     int min, ret, cur;
     min = prices[0], ret = 0, cur = 0;
-    for(int i=1;i<prices.size();i++){
+    for(int i = 1;i < prices.size();i++){
         cur = prices[i] - min;
         if(cur > 0){
             ret += cur;

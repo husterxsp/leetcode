@@ -6,11 +6,12 @@
 #include <cmath>
 using namespace std;
 
+// 思路：记录一个最小值min
 int maxProfit(vector<int>& prices) {
     if(!prices.size()) return 0;
     int min, ret, cur;
     min = prices[0], ret = 0, cur = 0;
-    for(int i=1;i<prices.size();i++){
+    for(int i = 1;i < prices.size();i++){
         cur = prices[i] - min;
         if(cur > ret){
             ret = cur;
