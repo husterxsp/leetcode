@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 #include <stdlib.h>
+#include <algorithm>
 #include <unordered_set>
 
 using namespace std;
@@ -27,8 +28,20 @@ using namespace std;
 //     return 0;
 // }
 
+int maxProduct(vector<int>& nums) {
+    int n = nums.size(), maxP = nums[0], minP = nums[0], ret = nums[0];
+    vector<int> arr;
+    for (int i = 1; i < n; i++) {
+        int tmpMax = maxP, tmpMin = minP;
+        maxP = max(nums[i], max(tmpMin * nums[i], tmpMax * nums[i]));
+        minP = min(nums[i], min(tmpMin * nums[i], tmpMax * nums[i]));
+        ret = max(ret, maxP);
+    }
+    return ret;
+}
+
 int main() {
-    vector<int> a = {2, 3, -2, 4};
+    vector<int> a = {2, 0};
     cout << maxProduct(a) << endl;
     return 0;
 }

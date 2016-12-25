@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <regex>
 
 using namespace std;
 //恩，这题让我又翻出了一年前写的编译原理的课设，词法语法分析器。。。
@@ -74,6 +75,20 @@ bool isNumber(string s) {
     }
     return true;
 }
+
+// string& trim(string &s) {
+//     if (s.empty()) return s;
+//     s.erase(0, s.find_first_not_of(" "));
+//     s.erase(s.find_last_not_of(" ") + 1);
+//     return s;
+// }
+//
+// bool isNumber(string s) {
+//     if (regex_match(trim(s), regex("[-+]?(\\d+\\.?|\\.\\d+)\\d*(e[-+]?\\d+)?"))) {
+//         return true;
+//     }
+//     return false;
+// }
 
 int main() {
 
