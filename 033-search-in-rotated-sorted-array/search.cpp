@@ -16,20 +16,20 @@ using namespace std;
 // O(logn)
 int search(vector<int>& nums, int target) {
     int left = 0, right = nums.size()-1, mid;
-    while(left <= right){
-        mid = (left+right)/2;
-        if(nums[mid] == target){
+    while(left <= right) {
+        mid = (left + right) / 2;
+        if(nums[mid] == target) {
             return mid;
         }
         // 注意这个地方的等于，上面的mid四舍五入取下。
-        if(nums[mid] >= nums[left]){
-            if(nums[left] <= target && target <= nums[mid]){
+        if(nums[mid] >= nums[left]) {
+            if (nums[left] <= target && target <= nums[mid]) {
                 right = mid - 1;
             } else {
                 left = mid + 1;
             }
         } else {
-            if(nums[mid] <= target && target <= nums[right]){
+            if (nums[mid] <= target && target <= nums[right]) {
                 left = mid + 1;
             } else {
                 right = mid - 1;
