@@ -9,13 +9,12 @@
 #include <unordered_set>
 
 /*
-    http://www.cnblogs.com/grandyang/p/4491665.html
-    http://blog.csdn.net/wzy_1988/article/details/45744067
-*/
+ http://www.cnblogs.com/grandyang/p/4491665.html
+ http://blog.csdn.net/wzy_1988/article/details/45744067
+ */
 
 using namespace std;
-class TrieNode {
-public:
+struct TrieNode {
     bool isWord;
     unordered_map<char, TrieNode*> nexts;
     TrieNode() {}
@@ -74,10 +73,9 @@ public:
 
 int main () {
     // Your Trie object will be instantiated and called as such:
-    string word = "ab";
-    string prefix = "a";
     Trie* obj = new Trie();
-    obj->insert(word);
-    bool param_2 = obj->search("a");
+    obj->insert("ab");
+    cout << obj->search("a") << endl;
+    cout << obj->startsWith("a") << endl;
     return 0;
 }

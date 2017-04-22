@@ -31,24 +31,25 @@ ListNode* reverseList(ListNode* head) {
     if (!head || !head->next) return head;
     ListNode* prev = head;
     ListNode* next = head->next;
-    ListNode* tmp = next;
-    while (next) {
-        prev->next = NULL;
-        tmp = next->next;
-        next->next = prev;
-        prev = next;
-        next = tmp;
-    }
     head->next = NULL;
-    return prev;
+    while (next) {
+        prev = next;
+        next = next->next;
+        prev->next = head;
+        head = prev;
+    }
+    return head;
 }
 void reorderList(ListNode* head) {
-    if (!head || !head->next) return;
+    if (!head || !head->next || !head->next->next) return;
     ListNode* mid = findMid(head);
     ListNode* left = head;
-    ListNode* right = reverseList(mid);
+    // 注意对next的处理
+    ListNode* right = reverseList(mid->next);
+    mid->next = NULL;
     ListNode* tmp;
-    while (right && right->next) {
+
+    while (right) {
         tmp = right->next;
         right->next = left->next;
         left->next = right;
@@ -63,10 +64,14 @@ int main(){
     ListNode* node3 = new ListNode(3);
     ListNode* node4 = new ListNode(4);
     ListNode* node5 = new ListNode(5);
+    ListNode* node6 = new ListNode(6);
+    ListNode* node7 = new ListNode(7);
     node1->next = node2;
     node2->next = node3;
     node3->next = node4;
     node4->next = node5;
+    node5->next = node6;
+    node6->next = node7;
     reorderList(node1);
     return 0;
 }

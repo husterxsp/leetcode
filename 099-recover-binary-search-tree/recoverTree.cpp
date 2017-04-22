@@ -10,51 +10,34 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
-// 先中序遍历再排序？
-// 1. 基本有序情况下插入排序？
-// 2. 看到网上的
-void recoverTree(TreeNode* root) {
-    stack<TreeNode*> myStack;
-    TreeNode* save = NULL;
-    TreeNode* p = root;
-    TreeNode* lastNode = NULL;
-    myStack.push(NULL);
-    while (p) {
-        if (p->left != lastNode) {
-            while (p->left) {
-                myStack.push(p);
-                p = p->left;
-            }
-        }
-        lastNode = p;
-        if (!save) {
-            save = p;
-        }
-        if (p->val > save->val) {
-            save->val = p->val;
-        }
-        else {
-            int tmp = save->val;
-            save->val = p->val;
-            p->val = tmp;
-            save = p;
-        }
-        if (p->right) {
-            p = p->right;
-        }
-        else {
-            p = myStack.top();
-            myStack.pop();
-        }
-    }
-    cout << root->val;
+// 难点在于中序遍历的空间复杂度
+// 另外关于乱序的判断，
+// ---大于右边或者小于左边---xxxx
+
+void inOrder(TreeNode *root, vector<TreeNode*> &list, vector<int> &val) {
+    if (root == null) return;
+    inOrder(root->left, list, val);
+    list.push_back(root);
+    val.push_back(root->val);
+    inOrder(root->right, list, val);
 }
+void recoverTree(TreeNode* root) {
+    vector<TreeNode*> list;
+    vector<int> val;
+    inOrder(root, list, val);
+    sort(val.begin(), val.end());
+    for (int i = 0; i < list.size(); i++) {
+        list[i]->val = val[i];
+    }
+}
+// 待看：
+// 非递归解法
+// O(1)解法。
 
 int main () {
-    TreeNode* root = new TreeNode(1);
-    root->left = new TreeNode(2);
-    root->right = new TreeNode(0);
-    root->right->right = new TreeNode(5);
+    TreeNode* root = new TreeNode(2);
+    root->left = new TreeNode(3);
+    root->right = new TreeNode(1);
     recoverTree(root);
     return 0;
 }
