@@ -7,7 +7,7 @@
 
 using namespace std;
 bool isBadVersion(int version) {
-    if (version >= 1) return true;
+    if (version >= 3) return true;
     return false;
 }
 
@@ -19,19 +19,24 @@ int firstBadVersion(int n) {
         // 1. 注意取平均值溢出
         // 2. 两种取平均的方式四舍五入不同, 取上还是取下
         // 3. 返回值的处理
-        // mid = (left + right) / 2;
-        mid = right - (right - left) / 2;
+        // mid = (left + right) / 2;  取下
+
+        // 还有...  int mid = left + (right - left) / 2; 取下
+
+//         mid = right - (right - left) / 2; // 取上
+
+        int mid = left + (right - left) / 2;
         if (isBadVersion(mid)) {
-            right = mid - 1;
+            right = mid;
         }
         else {
             left = mid + 1;
         }
     }
-    return isBadVersion(left) ? left : left + 1;
+    return right;
 }
 
 int main () {
-    cout << firstBadVersion(1) << endl;
+    cout << firstBadVersion(7) << endl;
     return 0;
 }

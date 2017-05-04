@@ -15,7 +15,8 @@
 
 using namespace std;
 struct TrieNode {
-    bool isWord;
+    // 一开始这里没初始化，导致leetcode无法AC,难道leetcode把这个isWord会初始化为True?
+    bool isWord = false;
     unordered_map<char, TrieNode*> nexts;
     TrieNode() {}
 };
@@ -30,14 +31,9 @@ public:
     /** Inserts a word into the trie. */
     void insert(string word) {
         TrieNode* p = root;
-        for (int i = 0; i < word.length(); i++) {
-            if (p->nexts.count(word[i])) {
-                p = p->nexts[word[i]];
-            }
-            else {
-                p->nexts.insert(make_pair(word[i], new TrieNode()));
-                p = p->nexts[word[i]];
-            }
+        for (auto c : word) {
+            if (p->nexts.find(c) == p->nexts.end()) p->nexts.insert(make_pair(c, new TrieNode()));
+            p = p->nexts[c];
         }
         p->isWord = true;
     }
@@ -45,13 +41,9 @@ public:
     /** Returns if the word is in the trie. */
     bool search(string word) {
         TrieNode* p = root;
-        for (int i = 0; i < word.length(); i++) {
-            if (p->nexts.count(word[i])) {
-                p = p->nexts[word[i]];
-            }
-            else {
-                return false;
-            }
+        for (auto c : word) {
+            if (p->nexts.find(c) == p->nexts.end()) return false;
+            p = p->nexts[c];
         }
         return p->isWord;
     }
@@ -59,13 +51,9 @@ public:
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
         TrieNode* p = root;
-        for (int i = 0; i < prefix.length(); i++) {
-            if (p->nexts.count(prefix[i])) {
-                p = p->nexts[prefix[i]];
-            }
-            else {
-                return false;
-            }
+        for (auto c : prefix) {
+            if (p->nexts.find(c) == p->nexts.end()) return false;
+            p = p->nexts[c];
         }
         return true;
     }

@@ -6,32 +6,29 @@
 
 using namespace std;
 
-int getNum(int k) {
-    if (k == 1) return 1;
-    return getNum(k - 1) * 9 + pow(10, k - 1);
-}
+/**
+http://blog.csdn.net/xudli/article/details/46798619
+例子:
+以算百位上1为例子:   假设百位上是0, 1, 和 >=2 三种情况:
+    case 1: n=3141092, a= 31410, b=92. 计算百位上1的个数应该为 3141 *100 次.
+    case 2: n=3141192, a= 31411, b=92. 计算百位上1的个数应该为 3141 *100 + (92+1) 次.
+    case 3: n=3141592, a= 31415, b=92. 计算百位上1的个数应该为 (3141+1) *100 次.
+以上三种情况可以用 一个公式概括:
+(a + 8) / 10 * m + (a % 10 == 1) * (b + 1);
 
+---
+将数字分为左右两个部分
+*/
 int countDigitOne(int n) {
-    int bit = 0, tmp = n;
-    if (n <= 0) return 0;
-    if (n <= 9) return 1;
-
-    while (tmp > 9) {
-        bit++;
-        tmp /= 10;
+    int ret = 0;
+    for (long k = 1; k <= n; k *= 10) {
+        int r = n / k, m = n % k;
+        ret += (r + 8) / 10 * k + (r % 10 == 1 ? m + 1 : 0);
     }
-
-    int xx = pow(10, bit);
-
-    if (tmp == 1) {
-        return  n - xx + 1 + getNum(bit);
-    }
-
-    return getNum(bit) * (tmp - 1) + pow(10, bit) + countDigitOne(n - xx * tmp);
+    return ret;
 }
 
 int main () {
-//    cout << getNum(1) << endl;
     cout << countDigitOne(11) << endl;
     return 0;
 }

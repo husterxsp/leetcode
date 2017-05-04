@@ -3,52 +3,43 @@
 
 using namespace std;
 
-// 这种题我也是醉了。。。
-
-string goback(string str){
-    if(str == "/"){
-        return "/";
-    }
-    str.pop_back();
-    for(int i=str.length()-1;i>=1;i--){
-        if(str[i] == '/'){
-            str.pop_back();
-            break;
-        }
-        str.pop_back();
-    }
-    return str;
-}
+// 参考：http://bangbingsyb.blogspot.com/2014/11/leetcode-simplify-path.html
 
 string simplifyPath(string path) {
-    string ret = "/";
-    for(int i=1;i<path.length();i++){
-        string type = path.substr(i, 2);
-        if(type == "./"){
-            i++;
-            continue;
-        } else if(type == "..") {
-            i+=2;
-            ret = goback(ret);
-            continue;
+    string ret, cur;
+    vector<string> dirs;
+
+    path.push_back('/');
+    for (int i = 0; i < path.size(); i++) {
+        if (path[i] == '/') {
+            if (cur.empty()) {
+                continue;
+            }
+            else if (cur == ".") {
+                cur.clear();
+            }
+            else if (cur == "..") {
+                if (!dirs.empty()) dirs.pop_back();
+                cur.clear();
+            }
+            else {
+                dirs.push_back(cur);
+                cur.clear();
+            }
         }
-        if(ret.back() == '/' && path[i] == '/'){
-            continue;
+        else {
+            cur.push_back(path[i]);
         }
-        if(path[i] == '.' && path[i+1] != '.'){
-            continue;
-        }
-        ret.push_back(path[i]);
     }
-    if(ret.length() > 1 && ret.back() == '/'){
-        ret.pop_back();
+
+    for (int i = 0; i < dirs.size(); i++) {
+        ret += "/" + dirs[i];
     }
-    return ret;
+    return !ret.empty() ? ret : "/";
 }
 
 int main()
 {
-    cout << simplifyPath("/...");
+    cout << simplifyPath("/./2312312") << endl;
     return 0;
 }
-

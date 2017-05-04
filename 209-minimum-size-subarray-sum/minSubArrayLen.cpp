@@ -9,22 +9,40 @@
 #include <unordered_set>
 
 using namespace std;
+/**
+ 注意外层while循环的终止条件
+ */
 int minSubArrayLen(int s, vector<int>& nums) {
-    int sum = 0, ret = 0, left = 0;
-    for (int right = 0; right < nums.size(); right++) {
-        sum += nums[right];
-        while (sum < s && right < nums.size() + 1) {
-            right++;
-            sum += nums[right];
+    int sum = 0, ret = 0, left = 0, right = 0, n = nums.size();
+    while (left < n && right < n) {
+        while (sum < s && right < n) {
+            sum += nums[right++];
         }
         while (sum - nums[left] >= s) {
-            sum -= nums[left];
-            left++;
+            sum -= nums[left++];
         }
-        ret = ret == 0 ? right - left + 1 : min(ret, right - left + 1);
+        if (sum < s) break;
+
+        int len = right - left;
+        ret = ret == 0 ? len : min(ret, len);
+
+        sum -= nums[left++];
     }
-    if (sum < s) return 0;
     return ret;
+}
+// 简化版
+int minSubArrayLen(int s, vector<int>& nums) {
+    int sum = 0, ret = INT_MAX, left = 0, right = 0, n = nums.size();
+    while (left < n && right < n) {
+        while (sum < s && right < n) {
+            sum += nums[right++];
+        }
+        while (sum >= s) {
+            ret = min(ret, right - left);
+            sum -= nums[left++];
+        }
+    }
+    return ret == INT_MAX ? 0 : ret;
 }
 int main () {
     vector<int> nums = {1,1};
