@@ -2,6 +2,7 @@
 
 using namespace std;
 int findNthDigit(int n) {
+    int quotient = 900000000;
     
 }
 int main() {
