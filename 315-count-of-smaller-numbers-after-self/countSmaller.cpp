@@ -20,6 +20,29 @@ vector<int> countSmaller(vector<int>& nums) {
     解法2. 归并排序
 */
 
+
+/**
+    解法3. 二叉索引树
+    参考：https://www.hrwhisper.me/leetcode-count-of-smaller-numbers-after-self/
+*/
+// vector<int> countSmaller(vector<int>& nums) {
+//     int n = nums.size();
+//     vector<int> tmp = nums;
+//     sort(tmp.begin(), tmp.end());
+//
+//     unordered_map<int, int> myMap;
+//     for (int i = 0; i < tmp.size(); i++) {
+//         myMap[tmp[i]] = i + 1;
+//     }
+//     vector<int> ret(n, 0);
+//     for (int i = n - 1; i >= 0; i--) {
+//         ret[i] =
+//     }
+//
+//     return ret;
+// }
+
+
 int main () {
     vector<int> nums{5, 2, 6, 1};
     countSmaller(nums);
