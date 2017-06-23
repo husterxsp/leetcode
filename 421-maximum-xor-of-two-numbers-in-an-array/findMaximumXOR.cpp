@@ -53,21 +53,60 @@ using namespace std;
 //     return ret;
 // }
 
-struct TrieNode {
-    int pos;
-    set<TrieNode*> zeroSet;
-    set<TrieNode*> oneSet;
-    TrieNode() {}
-};
-int findMaximumXOR(vector<int>& nums) {
-    set<int> numSet(nums.begin(), nums.end());
-    int maxBit = 31, tmpMax = *numSet.rbegin();
-    while (maxBit >= 0) {
-        if (tmpMax & (1 << maxBit)) break;
-        else maxBit--;
-    }
+/**
+ tri树
 
-    TrieNode *root = new TrieNode();
+ Class 和 Struct有啥区别？
+ */
+
+class TrieNode {
+public:
+    TrieNode* next[2];
+    TrieNode() {
+        next[0] = next[1] = NULL;
+    }
+};
+
+TrieNode* buildTrie(vector<int>& nums) {
+    TrieNode* root = new TrieNode();
+    for (auto num : nums) {
+        TrieNode* p = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (!p->next[bit]) {
+                p->next[bit] = new TrieNode();
+            }
+            p = p->next[bit];
+        }
+    }
+    return root;
+}
+
+int search(TrieNode* root, int num) {
+    int ret = 0;
+    TrieNode* p = root;
+    for (int i = 31; i >= 0; i--) {
+        int bit = (num >> i) & 1 ? 0 : 1;
+        ret <<= 1;
+
+        if (p->next[bit]) {
+            ret |= 1;
+            p = p->next[bit];
+        }
+        else {
+            ret |= 0;
+            p = p->next[bit ? 0 : 1];
+        }
+    }
+    return ret;
+}
+int findMaximumXOR(vector<int>& nums) {
+    TrieNode* root = buildTrie(nums);
+    int ret = INT_MIN;
+    for (auto num : nums) {
+        ret = max(ret, search(root, num));
+    }
+    return ret;
 }
 
 int main () {
