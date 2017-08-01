@@ -13,3 +13,5 @@ sync_changes.log
 sync_hook.script
 
 **/.Archive
+
+.md_configs.data
