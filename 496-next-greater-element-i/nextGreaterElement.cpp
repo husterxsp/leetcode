@@ -33,13 +33,15 @@ vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
     unordered_map<int, int> myMap;
     for (int num : nums) {
         while (!myStack.empty() && num > myStack.top()) {
-            myMap[myStack.pop()] = num;
+            myMap[myStack.top()] = num;
+            myStack.pop();
         }
         myStack.push(num);
     }
     for (int num : findNums) {
         ret.push_back(myMap.find(num) == myMap.end() ? -1 : myMap[num]);
     }
+    return ret;
 }
 int main(){
     vector<int> findNums{4,1,2};

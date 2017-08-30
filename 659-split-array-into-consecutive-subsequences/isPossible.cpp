@@ -1,17 +1,29 @@
 /**
-    有点不太懂题意
-    http://blog.csdn.net/u014688145/article/details/77148515
+    参考：http://www.cnblogs.com/pk28/p/7384602.html
 */
 class Solution {
 public:
     bool isPossible(vector<int>& nums) {
-        int l = 0, r = 3, n = nums.size();
+        int n = nums.size();
         if (n < 3) return false;
 
-        while () {
-            if (nums[l] == nums[l + 1] - 1 && nums[l + 1] == nums[l + 2] - 1) {
+        map<int, int> m, m1;
+        for (int i = 0; i < n; i++) m[nums[i]]++;
 
+        for (int i = 0; i < n; i++) {
+            int x = nums[i];
+
+            if (m[x] <= 0) continue;
+            if (m1[x - 1]) {
+                m[x]--;
+                m1[x - 1]--; m1[x]++;
             }
+            else if (m[x + 1] > 0 && m[x + 2] > 0) {
+                m[x]--; m[x + 1]--; m[x + 2]--;
+                m1[x + 2]++;
+            }
+            else return false;
         }
+        return true;
     }
 };
