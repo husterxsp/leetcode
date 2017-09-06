@@ -19,6 +19,7 @@ int bulbSwitch(int n) {
    return ret;
 }
 // 解法2 AC
+// 找出1-n的平方数的个数，
 int bulbSwitch(int n) {
     int ret = 0;
     while (ret * ret < n) {
