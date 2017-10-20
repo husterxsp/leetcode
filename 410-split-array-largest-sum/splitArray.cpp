@@ -1,52 +1,30 @@
-// int splitArray(vector<int>& nums, int m) {
-//     if (m == 1) return accumulate(nums.begin(), nums.end(), 0);
-//
-//     int ret = INT_MAX;
-//     int n = nums.size();
-//     for (int i = 0; i + m <= n; i++) {
-//         vector<int> newNums(nums.begin() + i + 1, nums.end());
-//
-//         int sum = accumulate(nums.begin(), nums.begin() + i + 1, 0);
-//
-//         ret = min(ret, max(sum, splitArray(newNums, m - 1)));
-//     }
-//     return ret;
-// }
-
+/**
+    dp[start][m - 1]：表示从start位置到nums数组的末尾，分成m个子数组，对应的最小的 子数组和的最大值。
+*/
 class Solution {
 public:
-    int help(vector<int>& nums, int m, int n, int start, vector<int> sum) {
-        int ret = INT_MAX, tmp1, tmp2;
-        if (m == 0) return 0;
-        if (m == 1) {
+    int help(vector<int>& nums, int m, int start, vector<vector<int>>& dp, vector<int> sumArr, int n) {
+        if (m == 1) return sumArr[n] - sumArr[start];
+        if (dp[start][m - 1] != -1) return dp[start][m - 1];
 
-            int tmp3 = start == 0 ? sum[n - 1] : (sum[n - 1] - sum[start - 1]);
+        int ret = INT_MAX;
+        for (int i = start; i <= n - m; i++) {
 
-            return tmp3;
+            int sum = sumArr[i + 1] - sumArr[start];
+
+            ret = min(ret, max(sum, help(nums, m - 1, i + 1, dp, sumArr, n)));
         }
-
-        for (int i = start; i <= n - start - m; i++) {
-
-            if (start == 0) {
-                tmp1 = sum[i];
-            }
-            else {
-                tmp1 = sum[i] - sum[start - 1];
-            }
-
-            int tmp2 = help(nums, m - 1, n, i + 1, sum);
-
-            ret = min(ret, max(tmp1, tmp2));
-        }
-        return ret;
+        return dp[start][m - 1] = ret;
     }
     int splitArray(vector<int>& nums, int m) {
         int n = nums.size();
-        vector<int> sum(n);
+        vector<int> sumArr(n + 1);
+        for (int i = 1; i <= n; i++) {
+            sumArr[i] = sumArr[i - 1] + nums[i - 1];
+        }
 
-        sum[0] = nums[0];
-        for (int i = 1; i < n; i++) sum[i] = sum[i - 1] + nums[i];
+        vector<vector<int>> dp(n, vector<int>(m, -1));
 
-        return help(nums, m, n, 0, sum);
+        return help(nums, m, 0, dp, sumArr, n);
     }
 };
