@@ -27,3 +27,24 @@ public:
         return sell[n - 1];
     }
 };
+
+/**
+    2017.10.27重新解答，参考 T121-123
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        if (n < 2) return 0;
+
+        vector<int> dp(n);
+        int tmp = max(-prices[0], -prices[1]);
+        dp[1] = max(prices[1] - prices[0], 0);
+
+        for (int i = 2; i < n; i++) {
+            dp[i] = max(dp[i - 1], tmp + prices[i]);
+            tmp = max(tmp, dp[i - 2] - prices[i]);
+        }
+        return dp[n - 1];
+    }
+};

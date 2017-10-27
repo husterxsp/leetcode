@@ -6,50 +6,51 @@
 #include <cmath>
 using namespace std;
 
-// 思路：
-// wrong answer：[1,2,4], expected: 3, output: 4
-//
-// assume: ret[0] > ret[1]
-// int maxProfit(vector<int>& prices) {
-//     if(!prices.size()) return 0;
-//     int min = prices[0], ret[2] = {0}, cur = 0;
-//     for (int i = 1;i < prices.size();i++) {
-//         cur = prices[i] - min;
-//         if (cur > ret[0]) {
-//             ret[1] = ret[0];
-//             ret[0] = cur;
-//         }
-//         else if (cur > ret[1]) {
-//             ret[1] = cur;
-//         }
-//         if (cur < 0) {
-//             min = prices[i];
-//         }
-//     }
-//     return ret[0] + ret[1];
-// }
+/**
+思路1，暴力求解，超时 197/198
+help函数来自 T121
+*/
+int help(vector<int>& prices) {
+    if (prices.empty()) return 0;
+    int minPrice = prices[0], ret = 0;
+    for (int i = 1; i < prices.size(); i++) {
+        ret = max(ret, prices[i] - minPrice);
+        minPrice = min(minPrice, prices[i]);
+    }
+    return ret;
+}
+int maxProfit(vector<int>& prices) {
+    int ret = 0;
+    for (int i = 0; i < prices.size(); i++) {
+        ret = max(ret, help(vector<int>(prices.begin(), prices.begin() + i)) +
+                help(vector<int>(prices.begin() + i, prices.end())));
+    }
+    return ret;
+}
 
-// 参考网上解析：divide and conquer (既然是限制只能是两次交易，有啥算法跟2有关，分治，二分。。。)
-// 动规，是不是就是保存已计算过的值?
+// // 参考网上解析：divide and conquer (既然是限制只能是两次交易，有啥算法跟2有关，分治，二分。。。)
+/**
+基于上面的暴力解进行优化，主要是 计算[0, j+1]的很多工作在[0,j]中已经计算过，考虑怎么解决重复计算。
+数组 left[i] 记录了price[0..i]的最大profit，
+数组 right[i]记录了price[i..n]的最大profit。
+*/
+
 int maxProfit(vector<int>& prices) {
     if (!prices.size()) return 0;
 
-    // minNum: 左边开始最小的
-    // maxNum: 右边开始最大的
-    // 思路: 以中间某个值为分界，左右两边各一次买入卖出, 先用一个数组记录左边的，然后再从右边遍历，
-    // 复杂度：时间O(n), 空间O(n)
-    int n = prices.size(), minNum = prices[0], maxNum = prices[n - 1], ret = 0;
+    int n = prices.size(), min = prices[0], max = prices[n - 1], ret = 0;
 
-    vector<int> leftMax(n, 0);
-    for (int i = 1; i < prices.size(); i++) {
-        minNum = min(prices[i], minNum);
-        leftMax[i] = max(prices[i] - minNum, ret);
-        ret = leftMax[i];
+    vector<int> left(n), right(n);
+    for (int i = 1; i < n; i++) {
+        min = min(prices[i], min);
+        left[i] = max(left[i - 1], prices[i] - minNum);
     }
 
-    for (int i = n - 1; i >= 0 ; i--) {
-        maxNum = max(prices[i], maxNum);
-        ret = max(leftMax[i] + maxNum - prices[i], ret);
+    for (int i = n - 2; i >= 0 ; i--) {
+        max = max(max, prices[i]);
+        right[i] = max(right[i + 1], max - prices[i]);
+
+        ret = max(ret, left[i] + right[i]);
     }
     return ret;
 }

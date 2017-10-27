@@ -1,27 +1,47 @@
+/**
+    贪心，优先执行剩的比较多任务，任务之间互相插空
+
+    大佬的解：
+    https://discuss.leetcode.com/topic/92852/concise-java-solution-o-n-time-o-26-space
+    http://www.cnblogs.com/grandyang/p/7098764.html
+*/
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        unordered_map<char, int> myMap;
+    //    auto cmp = [](const int a, const int b) {
+    //        return a > b;
+    //    };
+
+        map<char, int> myMap;
         for (char c : tasks) myMap[c]++;
 
-        int ret = 0, idle = 0;
-        while (myMap.size()) {
-            ret += myMap.size();
-            if (n >= myMap.size()) idle = n - myMap.size() + 1;
-            for (auto it = myMap.cbegin(); it != myMap.cend();) {
-                char c = it->first;
-                myMap[c]--;
-                if (myMap[c] == 0) {
-                    myMap.erase(it++);
+        vector<int> v;
+        for (auto it : myMap) v.push_back(it.second);
+    //    sort(v.begin(), v.end(), cmp);
+
+        sort(v.begin(), v.end(), greater<int>());
+
+        int ret = 0;
+        while (v.size()) {
+            int task = 0;
+            for (int i = 0; i < v.size(); i++) {
+                v[i]--;
+
+                if (v[i] == 0) {
+                    v.erase(v.begin() + i);
+                    i--;
                 }
-                else
-                {
-                    ++it;
-                }
+                task++;
+
+                sort(v.begin(), v.end(), greater<int>());
+                if (task == n + 1) break;
             }
-            if (myMap.size()) {
-                ret += idle;
-                idle = 0;
+
+            if (v.empty()) {
+                ret += task;
+            }
+            else {
+                ret += n + 1;
             }
         }
         return ret;
