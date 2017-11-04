@@ -16,6 +16,7 @@ public:
         return ret;
     }
 };
+
 /**
     参考: http://www.cnblogs.com/grandyang/p/5162678.html
 
@@ -44,3 +45,13 @@ public:
 /**
     Merge Sort
 */
+
+
+
+/**
+    线段树...
+*/
+class Solution {
+public:
+
+};
