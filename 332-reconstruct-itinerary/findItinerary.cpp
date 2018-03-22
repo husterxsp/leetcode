@@ -3,6 +3,7 @@
     1. map利用的是multiset而不是set，可能有重复的线路
     2. set先删除再插入，地址变了？怎么访问总是出错
 */
+有向图的欧拉通路
 class Solution {
 public:
     void search(unordered_map<string, multiset<string>>& myMap, string key, vector<string>& ret) {

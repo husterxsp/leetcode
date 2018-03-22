@@ -10,12 +10,7 @@ class Solution(object):
         people.sort(key = lambda row: (row[0], -row[1]))
         n = len(people)
         for i in range(n - 2, -1, -1):
-            k = people[i][1]
-            j = i
-            while k > 0:
-                j += 1
-                k -= 1
-            people.insert(j + 1, people[i])
+            people.insert(i + people[i][1] + 1, people[i])
             people.remove(people[i])
         return people
 

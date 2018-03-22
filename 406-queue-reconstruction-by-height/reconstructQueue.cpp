@@ -1,26 +1,22 @@
+/**
+    思路：排好序后，对于某一个人，>=他的高度的人有几个，在数组中就往后移动几位。
+*/
 #include <iostream>
 #include <vector>
 
 using namespace std;
-/**
-    一次AC...
-*/
-static bool compare(pair<int, int>&i, pair<int, int>&j) {
-    if (i.first < j.first) return true;
-    else if (i.first == j.first) return i.second > j.second;
-    else return false;
+
+bool compare(pair<int, int>& a, pair<int, int>& b) {
+    return a.first < b.first || (a.first == b.first && a.second > b.second);
 }
 vector<pair<int, int>> reconstructQueue(vector<pair<int, int>>& people) {
-    sort(people.begin(), people.end(), compare);
+    sort(people.begin(), people.end(), [](pair<int, int>& a, pair<int, int>& b) {
+        return a.first < b.first || (a.first == b.first && a.second > b.second);
+    });
+
     int n = people.size();
-    for (int i = n - 2; i >= 0; i--) {
-        int k = people[i].second;
-        int j = i;
-        while (k > 0) {
-            j++;
-            k--;
-        }
-        people.insert(people.begin() + j + 1, people[i]);
+    for (int i = n - 1; i >= 0; i--) {
+        people.insert(people.begin() + i + people[i].second + 1, people[i]);
         people.erase(people.begin() + i);
     }
     return people;
